@@ -1,0 +1,38 @@
+* Required packages
+
+- gcc
+- make
+- binutils
+- kernel-devel
+
+You also need to install nilfs-utils package.  The garbage collector
+of NILFS, snapshot management tools, man-pages, and other filesystem
+administration tools, are included in the package.
+
+* Caveat
+
+This kernel module release is experimental and is not guranteed to be
+released continuously in the future.  Although nilfs2 file system is
+included in the mainline kernel, the distro kernels that this module
+targets backport patches independently, so it may be difficult to keep
+up in the future and it may not be possible to release a compatible
+kernel module.
+
+* Target Linux distributions
+
+- CentOS 10 Stream
+
+* How to get development sources
+
+ $ cd your-work-directory
+ $ git clone https://github.com/nilfs-dev/nilfs2-kmod10.git
+
+* How to compile
+
+ $ cd nilfs2-kmod10
+ $ make
+
+* How to install
+
+ $ sudo make install
+
