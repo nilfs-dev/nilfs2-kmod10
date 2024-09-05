@@ -1,3 +1,15 @@
+nilfs2-kmod10-1.1  Thu Sep 5, 2024 JST
+
+	* backport upstream bug fixes for issues such as memory access
+	  violations or invalid pointer dereferencing due to missing exclusive
+	  controls in the sysfs interface, a use-after-free bug in an error
+	  path of recovery during mount, and hangs and metadata block loss
+	  due to insufficient cleanup after log writer errors:
+	  - nilfs2: fix state management in error path of log writing function
+	  - nilfs2: fix missing cleanup on rollforward recovery error
+	  - nilfs2: protect references to superblock parameters exposed in
+	    sysfs
+
 nilfs2-kmod10-1.0  Tue Aug 20, 2024 JST
 
 	* add kern_feature.h header file
