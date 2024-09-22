@@ -1,3 +1,60 @@
+nilfs2-kmod10-2.0  Sun Sep 22, 2024 JST
+
+	* backport upstream changes to add support for common ioctls for
+	  getting the volume UUID and the relative path of an FS instace within
+	  the sysfs namespace, and for getting and setting the volume label:
+	  - nilfs2: add support for FS_IOC_GETFSUUID
+	  - nilfs2: add support for FS_IOC_GETFSSYSFSPATH
+	  - nilfs2: add support for FS_IOC_GETFSLABEL
+	  - nilfs2: add support for FS_IOC_SETFSLABEL
+
+	* backport upstream fixes that prevent internal code -ENOENT from
+	  propagating to system calls:
+	  - nilfs2: treat missing sufile header block as metadata corruption
+	  - nilfs2: treat missing cpfile header block as metadata corruption
+	  - nilfs2: do not propagate ENOENT error from sufile during recovery
+	  - nilfs2: do not propagate ENOENT error from sufile during GC
+	  - nilfs2: do not propagate ENOENT error from
+	    nilfs_sufile_mark_dirty()
+
+	* backport upstream fixes for three potential issues with empty b-tree
+	  nodes that can occur with corrupted file system images, including one
+	  recently discovered by syzbot:
+	  - nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
+	  - nilfs2: determine empty node blocks as corrupted
+	  - nilfs2: fix potential oob read in nilfs_btree_check_delete()
+
+	* backport a change to suppress nuisance kernel warnings that are
+	  output after detecting file system corruption and degrading to a
+	  read-only mount:
+	  - nilfs2: do not output warnings when clearing dirty buffers
+
+	* backport upstream fixes that correct a number of formatting issues in
+	  kernel doc comments and suppress warnings output by kernel-doc
+	  scripts:
+	  - nilfs2: add missing argument description for __nilfs_error()
+	  - nilfs2: add missing argument descriptions for ioctl-related helpers
+	  - nilfs2: improve kernel-doc comments for b-tree node helpers
+	  - nilfs2: fix incorrect kernel-doc declaration of nilfs_palloc_req
+	    structure
+	  - nilfs2: add missing description of nilfs_btree_path structure
+	  - nilfs2: describe the members of nilfs_bmap_operations structure
+	  - nilfs2: fix inconsistencies in kernel-doc comments in segment.h
+	  - nilfs2: fix missing initial short descriptions of kernel-doc
+	    comments
+
+	* backport assorted cleanups:
+	  - nilfs2: use common implementation of file type
+	  - nilfs2: use the BITS_PER_LONG macro
+	  - nilfs2: separate inode type information from i_state field
+	  - nilfs2: eliminate the shared counter and spinlock for i_generation
+	  - nilfs2: do not repair reserved inode bitmap in nilfs_new_inode()
+	  - nilfs2: remove sc_timer_task
+	  - nilfs2: use kthread_create and kthread_stop for the log writer
+	    thread
+	  - nilfs2: refactor nilfs_segctor_thread()
+	  - nilfs2: remove duplicate 'unlikely()' usage
+
 nilfs2-kmod10-1.1  Thu Sep 5, 2024 JST
 
 	* backport upstream bug fixes for issues such as memory access
