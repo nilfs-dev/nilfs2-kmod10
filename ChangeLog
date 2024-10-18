@@ -1,3 +1,14 @@
+nilfs2-kmod10-2.1  Fri Oct 18, 2024 JST
+
+	* backport an upstream fix for a problem where a directory search could
+	  loop for a long time on a broken filesystem, which could result in a
+	  large amount of error logs being output in bursts:
+	  - nilfs2: propagate directory read errors from nilfs_find_entry()
+
+	* backport one page->folio conversion patch for mount time recovery
+	  implementation:
+	  - nilfs2: Use a folio in nilfs_recover_dsync_blocks()
+
 nilfs2-kmod10-2.0  Sun Sep 22, 2024 JST
 
 	* backport upstream changes to add support for common ioctls for
