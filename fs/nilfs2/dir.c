@@ -97,7 +97,7 @@ static void nilfs_commit_chunk(struct folio *folio,
 	unsigned int nr_dirty;
 	int err;
 
-	nr_dirty = nilfs_page_count_clean_buffers(&folio->page, from, to);
+	nr_dirty = nilfs_page_count_clean_buffers(folio, from, to);
 	copied = compat_block_write_end(NULL, mapping, pos, len, len, folio,
 					NULL);
 	if (pos + copied > dir->i_size)

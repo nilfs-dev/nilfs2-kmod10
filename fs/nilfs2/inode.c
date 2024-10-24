@@ -249,15 +249,15 @@ static int nilfs_write_end(struct file *file, struct address_space *mapping,
 {
 	struct inode *inode = mapping->host;
 #if HAVE_FOLIO_BASED_WRITE_BEGIN_END
-	struct page *page = &p->page;
+	struct folio *folio = p;
 #else
-	struct page *page = p;
+	struct folio *folio = page_folio(p);
 #endif
 	unsigned int start = pos & (PAGE_SIZE - 1);
 	unsigned int nr_dirty;
 	int err;
 
-	nr_dirty = nilfs_page_count_clean_buffers(page, start,
+	nr_dirty = nilfs_page_count_clean_buffers(folio, start,
 						  start + copied);
 	copied = generic_write_end(file, mapping, pos, len, copied, p, fsdata);
 	nilfs_set_file_dirty(inode, nr_dirty);
