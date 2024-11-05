@@ -1,3 +1,8 @@
+nilfs2-kmod10-2.3  Tue Nov 5, 2024 JST
+
+	* fix build issues on the newer RHEL 10 kernel (RHEL_RELEASE == 27):
+	  - Allow switching of folio-based write_{begin,end}
+
 nilfs2-kmod10-2.2  Mon Nov 4, 2024 JST
 
 	* backport fixes for two kernel bug that could occur when file system
