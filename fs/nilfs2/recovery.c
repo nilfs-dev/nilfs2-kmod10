@@ -12,6 +12,7 @@
 #include <linux/swap.h>
 #include <linux/slab.h>
 #include <linux/crc32.h>
+#include "kern_feature.h"
 #include "nilfs.h"
 #include "segment.h"
 #include "sufile.h"
@@ -507,7 +508,6 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
 	struct inode *inode;
 	struct nilfs_recovery_block *rb, *n;
 	unsigned int blocksize = nilfs->ns_blocksize;
-	struct page *page;
 	struct folio *folio;
 	loff_t pos;
 	int err = 0, err2 = 0;
@@ -521,8 +521,8 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
 		}
 
 		pos = rb->blkoff << inode->i_blkbits;
-		err = block_write_begin(inode->i_mapping, pos, blocksize,
-					&page, nilfs_get_block);
+		err = compat_block_write_begin(inode->i_mapping, pos, blocksize,
+					       &folio, nilfs_get_block);
 		if (unlikely(err)) {
 			loff_t isize = inode->i_size;
 
@@ -532,8 +532,7 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
 			goto failed_inode;
 		}
 
-		folio = page_folio(page);
-		err = nilfs_recovery_copy_block(nilfs, rb, pos, page);
+		err = nilfs_recovery_copy_block(nilfs, rb, pos, &folio->page);
 		if (unlikely(err))
 			goto failed_page;
 
@@ -541,8 +540,8 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
 		if (unlikely(err))
 			goto failed_page;
 
-		block_write_end(NULL, inode->i_mapping, pos, blocksize,
-				blocksize, page, NULL);
+		compat_block_write_end(NULL, inode->i_mapping, pos, blocksize,
+				       blocksize, folio, NULL);
 
 		folio_unlock(folio);
 		folio_put(folio);

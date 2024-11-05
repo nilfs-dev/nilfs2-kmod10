@@ -30,6 +30,7 @@
  */
 
 #include <linux/pagemap.h>
+#include "kern_feature.h"
 #include "nilfs.h"
 #include "page.h"
 
@@ -83,7 +84,8 @@ static int nilfs_prepare_chunk(struct folio *folio, unsigned int from,
 {
 	loff_t pos = folio_pos(folio) + from;
 
-	return __block_write_begin(&folio->page, pos, to - from, nilfs_get_block);
+	return compat___block_write_begin(folio, pos, to - from,
+					  nilfs_get_block);
 }
 
 static void nilfs_commit_chunk(struct folio *folio,
@@ -96,7 +98,8 @@ static void nilfs_commit_chunk(struct folio *folio,
 	int err;
 
 	nr_dirty = nilfs_page_count_clean_buffers(&folio->page, from, to);
-	copied = block_write_end(NULL, mapping, pos, len, len, &folio->page, NULL);
+	copied = compat_block_write_end(NULL, mapping, pos, len, len, folio,
+					NULL);
 	if (pos + copied > dir->i_size)
 		i_size_write(dir, pos + copied);
 	if (IS_DIRSYNC(dir))
