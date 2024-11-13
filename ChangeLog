@@ -1,3 +1,10 @@
+nilfs2-kmod10-2.4  Thu Nov 14, 2024 JST
+
+	* backport fixes for null pointer dereference bugs that occur when
+	  using nilfs2 and two block-related tracepoints:
+	  - nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
+	  - nilfs2: fix null-ptr-deref in block_dirty_buffer tracepoint
+
 nilfs2-kmod10-2.3  Tue Nov 5, 2024 JST
 
 	* fix build issues on the newer RHEL 10 kernel (RHEL_RELEASE == 27):
