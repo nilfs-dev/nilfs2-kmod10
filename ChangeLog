@@ -1,3 +1,14 @@
+nilfs2-kmod10-2.5  Mon Dec 23, 2024 JST
+
+	* backport a fix for buffer head leaks that progress in GC:
+	  - nilfs2: fix buffer head leaks in calls to truncate_inode_pages()
+
+	* backport fixes for potential issues such as out-of-page memory access
+	  and link counter underflow that can occur on corrupted file systems:
+	  - nilfs2: prevent use of deleted inode
+	  - nilfs2: fix potential out-of-bounds memory access in
+	    nilfs_find_entry()
+
 nilfs2-kmod10-2.4  Thu Nov 14, 2024 JST
 
 	* backport fixes for null pointer dereference bugs that occur when
