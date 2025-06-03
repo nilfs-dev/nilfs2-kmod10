@@ -1,3 +1,18 @@
+nilfs2-kmod10-3.1  Tue Jun 3, 2025 JST
+
+	* backport fixes for one missed check for block mapping anomalies
+	  and one improper return of an error code during a preparation step
+	  for log writing, thereby improving checking for filesystem
+	  corruption on writeback:
+	  - nilfs2: add pointer check for nilfs_direct_propagate()
+	  - nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
+
+	* preventively backport a harmless change to eliminate the possibility
+	  of false positive deadlock warnings being triggered in debug build
+	  configurations by backporting a fix to the block layer:
+	  - nilfs2: fix deadlock warnings caused by lock dependency in
+	    init_nilfs()
+
 nilfs2-kmod10-3.0  Mon Feb 3, 2025 JST
 
 	* backport fixes for the buffer head state inconsistency issues
