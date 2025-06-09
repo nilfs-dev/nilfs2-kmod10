@@ -21,6 +21,7 @@ kernel module.
 * Target Linux distributions
 
 - CentOS 10 Stream
+- AlmaLinux 10
 
 * How to get development sources
 
