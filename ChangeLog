@@ -1,3 +1,13 @@
+nilfs2-kmod10-3.2  Tue Jul 29, 2025 JST
+
+	* backport a fix for missing sanity checks for file type anomalies
+	  that could occur on corrupted filesystems (as reported by syzbot):
+	  - nilfs2: reject invalid file types when reading inodes
+
+	* update README file:
+	  - nilfs2-kmod10: README: add AlmaLinux 10 to supported distros
+	  - nilfs2-kmod10: README: add Rocky Linux 10 to supported distros
+
 nilfs2-kmod10-3.1  Tue Jun 3, 2025 JST
 
 	* backport fixes for one missed check for block mapping anomalies
