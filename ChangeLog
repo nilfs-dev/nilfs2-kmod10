@@ -1,3 +1,9 @@
+nilfs2-kmod10-3.4  Tue Nov 18, 2025 JST
+
+	* backport a fix for potential timer use-after-free issue when
+	  stopping log writer thread for unmounting:
+	  - nilfs2: avoid having an active sc_timer before freeing sci
+
 nilfs2-kmod10-3.3  Tue Oct 28, 2025 JST
 
 	* fix build issue occuring with the newer RHEL 10 kernel
