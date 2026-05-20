@@ -269,7 +269,7 @@ out:
 		nilfs_transaction_abort(dir->i_sb);
 
 #if HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY
-	return ERR_PTR(err);
+	return err ? ERR_PTR(err) : NULL;
 #else
 	return err;
 #endif /* HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY */
