@@ -1,3 +1,12 @@
+nilfs2-kmod10-3.7  Wed Jun 17, 2026 JST
+
+	* backport fixes for a backing_dev_info reference count leak and a hang
+	  issue triggered by passing an out-of-range segment number argument to
+	  the GC ioctl:
+	  - nilfs2: fix backing_dev_info reference leak
+	  - nilfs2: reject CLEAN_SEGMENTS ioctl with out-of-range segment
+	    numbers
+
 nilfs2-kmod10-3.6  Wed Apr 15, 2026 JST
 
 	* backport fixes for a potential bug in GC ioctl reachable through
