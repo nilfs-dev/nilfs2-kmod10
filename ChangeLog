@@ -1,3 +1,11 @@
+nilfs2-kmod10-3.8  Tue Jul 21, 2026 JST
+
+	* fix build issue occuring with the newer RHEL 10 kernel
+	  (RHEL_RELEASE == 150):
+	  - Make the return type of iop.mkdir switchable between int and dentry
+	    pointer
+	  - nilfs2: Fix return in nilfs_mkdir
+
 nilfs2-kmod10-3.7  Wed Jun 17, 2026 JST
 
 	* backport fixes for a backing_dev_info reference count leak and a hang
