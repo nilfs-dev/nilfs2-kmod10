@@ -25,6 +25,7 @@
  */
 
 #include <linux/pagemap.h>
+#include "kern_feature.h"
 #include "nilfs.h"
 #include "export.h"
 
@@ -218,8 +219,13 @@ static int nilfs_link(struct dentry *old_dentry, struct inode *dir,
 	return err;
 }
 
-static int nilfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
-		       struct dentry *dentry, umode_t mode)
+#if HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY
+static struct dentry *
+#else
+static int
+#endif /* HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY */
+nilfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+	    struct dentry *dentry, umode_t mode)
 {
 	struct inode *inode;
 	struct nilfs_transaction_info ti;
@@ -227,7 +233,11 @@ static int nilfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 
 	err = nilfs_transaction_begin(dir->i_sb, &ti, 1);
 	if (err)
+#if HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY
+		return ERR_PTR(err);
+#else
 		return err;
+#endif /* HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY */
 
 	inc_nlink(dir);
 
@@ -258,7 +268,11 @@ out:
 	else
 		nilfs_transaction_abort(dir->i_sb);
 
+#if HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY
+	return ERR_PTR(err);
+#else
 	return err;
+#endif /* HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY */
 
 out_fail:
 	drop_nlink(inode);

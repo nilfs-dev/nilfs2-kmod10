@@ -26,10 +26,16 @@
 #  if (RHEL_RELEASE_N >= 144)
 #   define	HAVE_TIMER_CONTAINER_OF				1
 #  endif
+#  if (RHEL_RELEASE_N >= 250)
+#   define	HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY		1
+#  endif
 # else /* !defined(RHEL_RELEASE_N) */
 #  define	HAVE_FOLIO_BASED_WRITE_BEGIN_END		1
 #  if (RHEL_MINOR > 1)				/* RHEL_RELEASE_N >= 125 */
 #   define	HAVE_TIMER_CONTAINER_OF				1
+#  endif
+#  if (RHEL_MINOR > 2)				/* RHEL_RELEASE_N >= 212 */
+#   define	HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY		1
 #  endif
 # endif
 #endif
@@ -49,6 +55,14 @@
 #ifndef HAVE_FOLIO_BASED_WRITE_BEGIN_END
 # define HAVE_FOLIO_BASED_WRITE_BEGIN_END \
 	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+#endif
+/*
+ * The mkdir function in inode_operations has been changed to return
+ * a dentry starting from kernel 6.15.
+ */
+#ifndef HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY
+# define HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY \
+	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 15, 0))
 #endif
 /*
  * from_timer() was replaced with timer_container_of() in kernel 6.16.
