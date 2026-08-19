@@ -29,6 +29,9 @@
 #  if (RHEL_RELEASE_N >= 250)
 #   define	HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY		1
 #  endif
+#  if (RHEL_RELEASE_N >= 260)
+#   define	HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END		1
+#  endif
 # else /* !defined(RHEL_RELEASE_N) */
 #  define	HAVE_FOLIO_BASED_WRITE_BEGIN_END		1
 #  if (RHEL_MINOR > 1)				/* RHEL_RELEASE_N >= 125 */
@@ -36,6 +39,7 @@
 #  endif
 #  if (RHEL_MINOR > 2)				/* RHEL_RELEASE_N >= 212 */
 #   define	HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY		1
+#   define	HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END		1
 #  endif
 # endif
 #endif
@@ -71,6 +75,14 @@
 # define HAVE_TIMER_CONTAINER_OF \
 	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 16, 0))
 #endif
+/*
+ * write_begin and write_end interfaces were converted to pass kiocb
+ * instead of file struct in kernel 6.17.
+ */
+#ifndef HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END
+# define HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END \
+	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 17, 0))
+#endif
 #endif /* LINUX_VERSION_CODE */
 
 
@@ -81,8 +93,15 @@
 	__block_write_begin(folio, pos, len, get_block)
 #define compat_block_write_begin(mapping, pos, len, foliop, get_block) \
 	block_write_begin(mapping, pos, len, foliop, get_block)
-#define compat_block_write_end(file, mapping, pos, len, copied, folio, data) \
-	block_write_end(file, mapping, pos, len, copied, folio, data)
+
+#if HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END
+#define compat_block_write_end(mapping, pos, len, copied, folio) \
+	block_write_end(pos, len, copied, folio)
+#else /* HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END */
+#define compat_block_write_end(mapping, pos, len, copied, folio) \
+	block_write_end(NULL, mapping, pos, len, copied, folio, NULL)
+#endif /* HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END */
+
 #else /* HAVE_FOLIO_BASED_WRITE_BEGIN_END */
 #define compat___block_write_begin(folio, pos, len, get_block) \
 	__block_write_begin(&(folio)->page, pos, len, get_block)
@@ -96,8 +115,8 @@
 			*(foliop) = page_folio(__page);			\
 		__rc;							\
 	})
-#define compat_block_write_end(file, mapping, pos, len, copied, folio, data) \
-	block_write_end(file, mapping, pos, len, copied, &(folio)->page, data)
+#define compat_block_write_end(mapping, pos, len, copied, folio) \
+	block_write_end(NULL, mapping, pos, len, copied, &(folio)->page, NULL)
 #endif /* HAVE_FOLIO_BASED_WRITE_BEGIN_END */
 
 #if !HAVE_TIMER_CONTAINER_OF

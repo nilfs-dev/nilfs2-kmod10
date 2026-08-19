@@ -561,8 +561,8 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
 		if (unlikely(err))
 			goto failed_folio;
 
-		compat_block_write_end(NULL, inode->i_mapping, pos, blocksize,
-				       blocksize, folio, NULL);
+		compat_block_write_end(inode->i_mapping, pos, blocksize,
+				       blocksize, folio);
 
 		folio_unlock(folio);
 		folio_put(folio);
