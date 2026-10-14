@@ -1,3 +1,12 @@
+nilfs2-kmod10-3.10  Wed Oct 14, 2026 JST
+
+	* fix build issue occuring with the newer RHEL 10 kernel
+	  (RHEL_RELEASE == 275):
+	  - Make the page/folio flags reference switchable
+
+	* fix documentation:
+	  - ChangeLog: correct RHEL_RELEASE numbers for RHEL 10 kernels
+
 nilfs2-kmod10-3.9  Thu Aug 20, 2026 JST
 
 	* fix build issue occuring with the newer RHEL 10 kernel
