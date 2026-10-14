@@ -16,6 +16,7 @@
 #include <linux/highmem.h>
 #include <linux/pagevec.h>
 #include <linux/gfp.h>
+#include "kern_feature.h"
 #include "nilfs.h"
 #include "page.h"
 #include "mdt.h"
@@ -167,7 +168,11 @@ void nilfs_folio_bug(struct folio *folio)
 	printk(KERN_CRIT "NILFS_FOLIO_BUG(%p): cnt=%d index#=%llu flags=0x%lx "
 	       "mapping=%p ino=%lu\n",
 	       folio, folio_ref_count(folio),
+#if HAVE_MEMDESC_FLAGS_T
+	       (unsigned long long)folio->index, folio->flags.f, m, ino);
+#else
 	       (unsigned long long)folio->index, folio->flags, m, ino);
+#endif
 
 	head = folio_buffers(folio);
 	if (head) {

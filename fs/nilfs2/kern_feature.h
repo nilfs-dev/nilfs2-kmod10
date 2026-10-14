@@ -32,6 +32,9 @@
 #  if (RHEL_RELEASE_N >= 260)
 #   define	HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END		1
 #  endif
+#  if (RHEL_RELEASE_N >= 275)
+#   define	HAVE_MEMDESC_FLAGS_T				1
+#  endif
 # else /* !defined(RHEL_RELEASE_N) */
 #  define	HAVE_FOLIO_BASED_WRITE_BEGIN_END		1
 #  if (RHEL_MINOR > 1)				/* RHEL_RELEASE_N >= 125 */
@@ -40,6 +43,9 @@
 #  if (RHEL_MINOR > 2)				/* RHEL_RELEASE_N >= 212 */
 #   define	HAVE_IOP_MKDIR_THAT_RETURNS_DENTRY		1
 #   define	HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END		1
+#  endif
+#  if (RHEL_MINOR > 3)				/* RHEL_RELEASE_N >= 266 */
+#   define	HAVE_MEMDESC_FLAGS_T				1
 #  endif
 # endif
 #endif
@@ -82,6 +88,15 @@
 #ifndef HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END
 # define HAVE_KIOCB_DRIVEN_WRITE_BEGIN_END \
 	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 17, 0))
+#endif
+/*
+ * As part of the effort to decouple the page structure from folio and
+ * slab structures, the memdesc_flags_t type was introduced in kernel
+ * 6.18 and adopted for use in {page,folio}->flags.
+ */
+#ifndef HAVE_MEMDESC_FLAGS_T
+# define HAVE_MEMDESC_FLAGS_T \
+	(LINUX_VERSION_CODE >= KERNEL_VERSION(6, 18, 0))
 #endif
 #endif /* LINUX_VERSION_CODE */
 
