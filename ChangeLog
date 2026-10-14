@@ -1,7 +1,7 @@
 nilfs2-kmod10-3.9  Thu Aug 20, 2026 JST
 
 	* fix build issue occuring with the newer RHEL 10 kernel
-	  (RHEL_RELEASE == 160):
+	  (RHEL_RELEASE == 260):
 	  - Make write_begin/write_end and block_write_end switchable
 
 	* backport a fix for an out-of-bounds memory access issue in direct
@@ -41,7 +41,7 @@ nilfs2-kmod10-3.9  Thu Aug 20, 2026 JST
 nilfs2-kmod10-3.8  Tue Jul 21, 2026 JST
 
 	* fix build issue occuring with the newer RHEL 10 kernel
-	  (RHEL_RELEASE == 150):
+	  (RHEL_RELEASE == 250):
 	  - Make the return type of iop.mkdir switchable between int and dentry
 	    pointer
 	  - nilfs2: Fix return in nilfs_mkdir
